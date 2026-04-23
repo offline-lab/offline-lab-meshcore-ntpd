@@ -1,12 +1,16 @@
 # esp32-timesyncd
 
-GPS stratum-1 NTP server and LoRa mesh repeater for the
-[Heltec Wireless Tracker](https://heltec.org/project/wireless-tracker/)
-(ESP32-S3 + UC6580 GPS + SX1262 LoRa + ST7735 TFT).
+GPS stratum-1 NTP server and LoRa mesh repeater. Runs on ESP32 boards
+supported by [MeshCore](https://github.com/meshcore-dev/MeshCore).
 
 Stratum 1 with live GPS fix, stratum 2 in holdover (GPS was synced this session),
 stratum 16 if never synced. Also broadcasts `TIME_ANNOUNCE` via UDP for
 [disco](https://github.com/offline-lab/disco).
+
+Tested on the
+[Heltec Wireless Tracker](https://heltec.org/project/wireless-tracker/)
+(ESP32-S3 + UC6580 GPS + SX1262 LoRa + ST7735 TFT). See
+[CONTRIBUTING.md](CONTRIBUTING.md) to add more boards.
 
 ## Building & flashing
 
@@ -100,11 +104,10 @@ Change via `platformio.ini` build flags or serial CLI (`set radio`, `set tx`).
 ~190mA with display on, ~160mA off. Display auto-off saves ~30mA.
 WiFi modem sleep is disabled intentionally — adds 100-300ms variable NTP latency.
 
-## Updating MeshCore
+## Adding boards
 
-1. Diff `examples/simple_repeater/MyMesh.h/.cpp` against `src/`
-2. Check `variants/heltec_tracker/target.h/.cpp` for pin/peripheral changes
-3. Ed25519 compiled from MeshCore's `lib/ed25519/` via `extra_script.py`
+See [CONTRIBUTING.md](CONTRIBUTING.md). Copy an env section in `platformio.ini`,
+set `MC_VARIANT` and pin definitions for your board.
 
 ## License
 
