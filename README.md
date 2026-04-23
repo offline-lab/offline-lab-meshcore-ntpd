@@ -3,9 +3,12 @@
 This is a small wrapper around [MeshCore](https://github.com/meshcore-dev/MeshCore) that offers a repeater 
 and some additional time and location functionality on the side. 
 
-In offline environments, I don't have access to an NTPd service, which come with its own setbacks. 
-To work around this, this small sketch, running on a Heltec wireless tracker, uses the time from a GPS receiver 
+In offline environments, I don't have access to an NTPd service, which comes with its own dificulties. 
+To work around this, this small sketch, running on a Heltec wireless tracker, uses the time from its GPS receiver 
 and offers this as a semi-accurate ntp daemon. (I have all the time, but it's just not exactly on time)
+
+This is not designed to be super accurate: If the time is a bit off, but in sync across my devices, thats perfectly fine.
+I just prefer to not live in the year 1979 all the time :) (And have only timestamps from 60 years back)
 
 Stratum 1 with live GPS fix, stratum 2 in holdover (GPS was synced this session but was lost since), stratum 16 if never synced. 
 
