@@ -1,16 +1,20 @@
-# esp32-timesyncd
+# offline-lab-meshcore-ntpd
 
-GPS stratum-1 NTP server and LoRa mesh repeater. Runs on ESP32 boards
-supported by [MeshCore](https://github.com/meshcore-dev/MeshCore).
+This is a small wrapper around [MeshCore](https://github.com/meshcore-dev/MeshCore) that offers a repeater 
+and some additional time and location functionality on the side. 
 
-Stratum 1 with live GPS fix, stratum 2 in holdover (GPS was synced this session),
-stratum 16 if never synced. Also broadcasts `TIME_ANNOUNCE` via UDP for
-[disco](https://github.com/offline-lab/disco).
+In offline environments, I don't have access to an NTPd service, which come with its own setbacks. 
+To work around this, this small sketch, running on a Heltec wireless tracker, uses the time from a GPS receiver 
+and offers this as a semi-accurate ntp daemon. (I have all the time, but it's just not exactly on time)
 
-Tested on the
-[Heltec Wireless Tracker](https://heltec.org/project/wireless-tracker/)
-(ESP32-S3 + UC6580 GPS + SX1262 LoRa + ST7735 TFT). See
-[CONTRIBUTING.md](CONTRIBUTING.md) to add more boards.
+Stratum 1 with live GPS fix, stratum 2 in holdover (GPS was synced this session but was lost since), stratum 16 if never synced. 
+
+Also broadcasts `TIME_ANNOUNCE` via UDP for [disco](https://github.com/offline-lab/disco).
+
+Tested on the [Heltec Wireless Tracker](https://heltec.org/project/wireless-tracker/) (ESP32-S3 + UC6580 GPS + SX1262 LoRa + ST7735 TFT). 
+See [CONTRIBUTING.md](CONTRIBUTING.md) to add more boards.
+
+This project was created with several LLMs and coding harnesses.
 
 ## Building & flashing
 
@@ -18,8 +22,8 @@ Requires [PlatformIO](https://platformio.org/). WiFi credentials are compile-tim
 
 ```bash
 WIFI_SSID=mynet WIFI_PASS=secret pio run              # build
-WIFI_SSID=mynet WIFI_PASS=secret pio run -t upload     # flash via USB
-pio device monitor                                      # serial console
+WIFI_SSID=mynet WIFI_PASS=secret pio run -t upload    # flash via USB
+pio device monitor                                    # serial console
 ```
 
 After initial USB flash, OTA over WiFi:
