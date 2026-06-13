@@ -3,7 +3,6 @@
 #include <ESPAsyncWebServer.h>
 #include <WiFi.h>
 #include <target.h>
-
 struct MeshInfo {
   char node_name[32];
   float freq;
@@ -35,7 +34,7 @@ class TimeWebServer {
     char ip[16];
 
     char status_json[320];
-    char location_json[128];
+    char location_json[256];
     char time_json[192];
     char mesh_json[512];
     bool clock_synchronized = false;
@@ -88,7 +87,6 @@ public:
       _cache.altitude = (double)loc->getAltitude() / 1000.0;
       _cache.satellites = loc->satellitesCount();
     }
-
     time_t t;
     time(&t);
     _cache.unix_time = (uint32_t)t;
