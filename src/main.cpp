@@ -8,6 +8,7 @@
 #include "wifi_manager.h"
 #include "ntp_server.h"
 #include "time_broadcaster.h"
+#include "location_broadcaster.h"
 #include "web_server.h"
 #include "display.h"
 
@@ -23,6 +24,7 @@ MyMesh the_mesh(board, radio_driver, *new ArduinoMillis(), fast_rng, rtc_clock, 
 SimpleWiFiManager wifi_mgr;
 NTPServer ntp_server;
 TimeBroadcaster time_broadcaster;
+LocationBroadcaster location_broadcaster;
 TimeWebServer web_server;
 
 static uint32_t get_ntp_queries() { return ntp_server.getQueryCount(); }
@@ -44,6 +46,7 @@ static void startServices() {
   if (services_started) return;
   ntp_server.begin();
   time_broadcaster.begin();
+  location_broadcaster.begin();
   web_server.begin(get_ntp_queries, fill_mesh_info);
   ArduinoOTA.setHostname("time");
   ArduinoOTA.begin();
@@ -159,6 +162,13 @@ void loop() {
     if (!services_started) startServices();
     ntp_server.loop(rtc_clock.getCurrentTime(), clock_synchronized, gps_has_fix);
     time_broadcaster.loop(rtc_clock.getCurrentTime(), clock_synchronized);
+    if (gps_has_fix && loc) {
+      double lat = (double)loc->getLatitude() / 1000000.0;
+      double lon = (double)loc->getLongitude() / 1000000.0;
+      double alt = (double)loc->getAltitude() / 1000.0;
+      long sats = loc->satellitesCount();
+      location_broadcaster.loop(lat, lon, alt, sats, true);
+    }
     web_server.setClockSynchronized(clock_synchronized);
     web_server.loop();
     ArduinoOTA.handle();
