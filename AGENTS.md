@@ -36,7 +36,8 @@ code — hardware specifics live in `platformio.ini` env sections.
 - `extra_script.py` — Reads `MC_VARIANT` from build flags, adds variant/src/example include paths + compiles ed25519 from MeshCore
 
 ### Key dependency: MeshCore
-- Pulled via `lib_deps = https://github.com/meshcore-dev/MeshCore.git`
+- Pulled via `lib_deps = https://github.com/meshcore-dev/MeshCore.git#repeater-v1.17.1` — pinned to a release tag; to upgrade, bump the tag and diff upstream `examples/simple_repeater/main.cpp` against our `src/main.cpp`
+- Board `lib_deps` must match the MeshCore variant's `platformio.ini` (e.g. ST7735 needs `bodmer/TFT_eSPI`). Display drivers render into an off-screen buffer that `endFrame()` pushes, so all drawing must happen between `startFrame()`/`endFrame()`
 - `MC_VARIANT` tells `build_as_lib.py` which variant to compile (pins, peripherals, GPS, display driver)
 - `BUILD_EXAMPLE=simple_repeater` compiles upstream's `MyMesh.cpp` and `RateLimiter.h` directly from the installed library (no local copy)
 - `EXCLUDE_FROM_EXAMPLE` removes `main.cpp` and `UITask.cpp` (we have our own)
