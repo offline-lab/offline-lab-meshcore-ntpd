@@ -77,7 +77,7 @@ void setup() {
     halt();
   }
 
-  fast_rng.begin(radio_get_rng_seed());
+  fast_rng.begin(radio_driver.getRngSeed());
 
   SPIFFS.begin(true);
   IdentityStore store(SPIFFS, "/identity");
@@ -119,6 +119,8 @@ void setup() {
                 &ntp_server, &wifi_mgr);
 
   the_mesh.sendSelfAdvertisement(16000, false);
+
+  board.onBootComplete();
 }
 
 void loop() {

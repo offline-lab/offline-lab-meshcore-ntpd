@@ -71,5 +71,5 @@ build_flags =
 lib_deps =
   ${timesyncd.lib_deps}
   stevemarple/MicroNMEA @ ^2.0.6
-  adafruit/Adafruit ST7735 and ST7789 Library @ ^1.11.0
+  bodmer/TFT_eSPI @ ^2.4.31
 ```
